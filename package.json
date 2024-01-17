@@ -1,0 +1,26 @@
+{
+  "name": "fragments-ui",
+  "source": "src/index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Fragments UI testing web app",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okuti2/fragments-ui.git"
+  },
+  "author": "Olutoyosi Kuti",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "parcel": "^2.11.0"
+  },
+  "dependencies": {
+    "aws-amplify": "^5.0.0"
+  }
+}
