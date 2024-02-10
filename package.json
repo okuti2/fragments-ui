@@ -17,8 +17,10 @@
   "author": "Olutoyosi Kuti",
   "license": "UNLICENSED",
   "devDependencies": {
+    "assert": "^2.1.0",
     "buffer": "^6.0.3",
-    "parcel": "^2.11.0"
+    "parcel": "^2.11.0",
+    "util": "^0.12.5"
   },
   "dependencies": {
     "aws-amplify": "^5.0.0"

@@ -1,6 +1,10 @@
 // src/api.js
 
+import { log } from "console";
+import logger from "../../fragments/src/logger";
+
 // fragments microservice API to use, defaults to localhost:8080 if not set in env
+
 const apiUrl = process.env.API_URL || 'http://localhost:8080';
 
 /**
@@ -9,13 +13,11 @@ const apiUrl = process.env.API_URL || 'http://localhost:8080';
  * to have an `idToken` attached, so we can send that along with the request.
  */
 export async function getUserFragments(user) {
-  console.log('Requesting user fragments data...');
   try {
     const res = await fetch(`${apiUrl}/v1/fragments`, {
-      // Generate headers with the proper Authorization bearer token to pass.
-      // We are using the `authorizationHeaders()` helper method we defined
-      // earlier, to automatically attach the user's ID token.
+      method: 'GET',
       headers: user.authorizationHeaders(),
+      
     });
     if (!res.ok) {
       throw new Error(`${res.status} ${res.statusText}`);
@@ -25,5 +27,32 @@ export async function getUserFragments(user) {
     return data;
   } catch (err) {
     console.error('Unable to call GET /v1/fragment', { err });
+  }
+}
+
+/**
+ * Given an authenticated user, create a new fragment with the provided data.
+ * We expect a user to have an `idToken` attached, so we can send that along
+ * with the request.
+ */
+export async function createFragment(user, data) {
+  console.log('Creating a new fragment...');
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${user.idToken}`,
+        "content-type": data.get('contentType'),
+      },
+      body: data.get('body'),
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const fragment = await res.json();
+    console.log('Successfully created a new fragment', { fragment });
+    return fragment;
+  } catch (err) {
+    logger.error('Error creating fragment:', err);
   }
 }

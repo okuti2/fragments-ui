@@ -12,7 +12,31 @@
       <nav><button id="login">Login</button> <button id="logout">Logout</button></nav>
     </section>
     <section hidden id="user">
-      <h2>Hello <span class="username"></span>!</h2>
+      <h2>Hello <span class="username"></span>!</h2></br>
+      
+      <h3>Create Fragments</h3>
+      <form enctype="multipart/form-data">
+
+        <label for="contentType">Select Content Type:</label>
+        <select id="contentType" name="contentType">
+          <option value="text/plain">text/plain</option>
+          <option value="text/plain; charset=utf-8">text/plain; charset=utf-8</option>
+        </select><br><br>
+
+        <label for="fileInput">Choose a file:</label>
+       <nav><input type="file" id="fileInput" name="fileInput"><br><br>
+        <button type="button" id="clearFileInput">Clear</button><br><br></nav>
+
+        <label for="textInput">Or enter text:</label>
+        <textarea id="textInput" name="textInput"></textarea><br><br>
+        
+        <input type="submit" value="Upload" id="fragments">
+      </form>
     </section>
   </body>
+
+
+
+  <script type=module src="app.js"></script>
+   
 </html>
