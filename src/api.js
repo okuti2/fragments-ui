@@ -7,12 +7,14 @@ import logger from "../../fragments/src/logger";
 
 const apiUrl = process.env.API_URL || 'http://localhost:8080';
 
+
 /**
  * Given an authenticated user, request all fragments for this user from the
  * fragments microservice (currently only running locally). We expect a user
  * to have an `idToken` attached, so we can send that along with the request.
  */
 export async function getUserFragments(user) {
+  console.log('Getting user fragments data from', { apiUrl });
   try {
     const res = await fetch(`${apiUrl}/v1/fragments`, {
       method: 'GET',

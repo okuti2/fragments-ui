@@ -9,7 +9,7 @@
   <body>
     <h1>Fragments UI</h1>
     <section>
-      <nav><button id="login">Login</button> <button id="logout">Logout</button></nav>
+      <nav><button id="login">Login</button> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <button id="logout">Logout</button></nav>
     </section>
     <section hidden id="user">
       <h2>Hello <span class="username"></span>!</h2></br>
@@ -19,18 +19,19 @@
 
         <label for="contentType">Select Content Type:</label>
         <select id="contentType" name="contentType">
+          <option value="" selected disabled>Select content type</option>
           <option value="text/plain">text/plain</option>
           <option value="text/plain; charset=utf-8">text/plain; charset=utf-8</option>
         </select><br><br>
 
         <label for="fileInput">Choose a file:</label>
-       <nav><input type="file" id="fileInput" name="fileInput"><br><br>
-        <button type="button" id="clearFileInput">Clear</button><br><br></nav>
+       <input type="file" id="fileInput" name="fileInput"><br><br>
 
         <label for="textInput">Or enter text:</label>
         <textarea id="textInput" name="textInput"></textarea><br><br>
         
-        <input type="submit" value="Upload" id="fragments">
+        
+        <nav><input type="submit" value="Upload" id="fragments"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <button type="button" id="clear">Clear</button></nav>
       </form>
     </section>
   </body>

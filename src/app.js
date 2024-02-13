@@ -32,8 +32,10 @@ async function init() {
     return;
   }
 
-  document.getElementById('clearFileInput').addEventListener('click', function() {
+  document.getElementById('clear').addEventListener('click', function() {
     document.getElementById('fileInput').value = '';
+    document.getElementById('textInput').value = '';
+    document.getElementById('contentType').selectedIndex = 0;
 });
 
 // Wire up event handler to deal with fragment form submission
@@ -63,26 +65,25 @@ async function init() {
         formData.append('body', textInput);
     }
     formData.append('contentType', contentType);
-    logger.debug({ contentType: formData.get('contentType'), Body: formData.get('body')});
 
-    try {
-        // Call the createFragment function with the user and form data
-        await createFragment(user, formData);
-        alert('Fragment uploaded successfully!');
-    } catch (error) {
-        logger.error('Error creating fragment:', error);
-        alert('Error uploading fragment. Please try again later.');
-    }
+    createFragment(user, formData)
+    .then(response => {
+      // The fragment was created successfully
+      alert('Fragment uploaded successfully');
+    })
+    .catch(error => {
+      // There was an error creating the fragment
+      console.error('Error creating fragment:', error);
+      alert('Error uploading fragment. Please try again later.');
+    });
 };
-
 
   // Do an authenticated request to the fragments API server and log the result
   const userFragments = await getUserFragments(user);
 
-  // TODO: later in the course, we will show all the user's fragments in the HTML...
+  // Log the user's details
+  console.log(user);
 
-  // Log the user info for debugging purposes
-  console.log({ user });
 
   // Update the UI to welcome the user
   userSection.hidden = false;
