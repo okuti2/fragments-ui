@@ -1,7 +1,7 @@
 // src/api.js
 
 import { log } from "console";
-import logger from "../../fragments/src/logger";
+//import logger from "../../fragments/src/logger";
 
 // fragments microservice API to use, defaults to localhost:8080 if not set in env
 
@@ -55,6 +55,6 @@ export async function createFragment(user, data) {
     console.log('Successfully created a new fragment', { fragment });
     return fragment;
   } catch (err) {
-    logger.error('Error creating fragment:', err);
+    console.error('Error creating fragment:', err);
   }
 }

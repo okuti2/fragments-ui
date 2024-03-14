@@ -2,7 +2,6 @@
 
 import { Auth, getUser } from './auth';
 import { getUserFragments, createFragment } from './api';
-import logger from '../../fragments/src/logger';
 
 async function init() {
   // Get our UI elements
