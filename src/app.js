@@ -41,6 +41,7 @@ async function init() {
 
 // Wire up event handler to deal with fragment form submission
   fragmentForm.onclick = async (event) => {
+    fragmentList.hidden = true;
     event.preventDefault(); // Prevent default form submission behavior
     
     const contentType = document.getElementById('contentType').value;
@@ -74,48 +75,71 @@ async function init() {
     })
     .catch(error => {
       // There was an error creating the fragment
-      console.error('Error creating fragment:', error);
       alert('Error uploading fragment. Please try again later.');
     });
   };
 
+  // Do an authenticated request to the fragments API server and log the result
+  var userFragments = await getUserFragments(user);
+
+
   // Wire up event handler to get fragments
   getFragmentsBtn.onclick = async () => {
+    fragmentList.hidden = false;
     try {
-      const fragments = await getUserFragments(user);
-      console.log('The fragments are' ,fragments);
-      console.log('The fragments[0] are' ,fragments.fragments[0]);
-      renderFragmentList(fragments.fragments);
+      userFragments = await getUserFragments(user);
+      fragmentList.innerHTML = ''; // Clear previous list
+      userFragments.fragments.forEach(async fragment => {
+
+        const listItem = document.createElement('details');
+        const fragmentLink = document.createElement('summary');
+        listItem.appendChild(fragmentLink);
+        fragmentLink.textContent = fragment.id; // Assuming the fragment object has an `id` property
+        fragmentList.appendChild(listItem);
+
+        // Get the fragment metadata
+        const id = document.createElement('ol');
+        id.innerHTML = `<b>Id</b> : ${fragment.id}`;
+        listItem.appendChild(id);
+
+        const ownerId = document.createElement('ol');
+        ownerId.innerHTML = `<b>OwnerId</b> : ${fragment.ownerId}`;
+        listItem.appendChild(ownerId);
+
+        const created = document.createElement('ol');
+        created.innerHTML = `<b>Created</b> : ${fragment.created}`;
+        listItem.appendChild(created);
+
+        const updated = document.createElement('ol');
+        updated.innerHTML = `<b>Updated</b> : ${fragment.updated}`;
+        listItem.appendChild(updated);
+
+        const contentType = document.createElement('ol');
+        contentType.innerHTML = `<b>ContentType</b> : ${fragment.type}`;
+        listItem.appendChild(contentType);
+
+        const size = document.createElement('ol');
+        size.innerHTML = `<b>Size</b> : ${fragment.size}`;
+        listItem.appendChild(size);
+
+        const fragmentData = await getFragmentById(user, fragment.id);
+        const data = document.createElement('ol');
+        data.innerHTML = `<b>Data</b> : ${fragmentData}`;
+        listItem.appendChild(data);
+
+      });
+      
     } catch (error) {
-      console.error('Error fetching fragments:', error);
       alert('Error fetching fragments. Please try again later.');
     }
   };
 
   // Function to render fragment list
   function renderFragmentList(fragments) {
-    fragmentList.innerHTML = ''; // Clear previous list
-    fragments.forEach(async fragment => {
-      const listItem = document.createElement('li');
-      const fragmentLink = document.createElement('a');
-      listItem.appendChild(fragmentLink);
-      fragmentLink.textContent = fragment; // Assuming the fragment object has an `id` property
-      fragmentLink.href = `#`;
-      console.log('The fragment is',fragment);
-      fragmentList.appendChild(listItem);
-
-      listItem.onclick = async () => {
-        const fragmentData = await getFragmentById(user, fragment);
-        alert('The metadata is' + JSON.stringify(fragmentData.fragment));
-        
-      
-      };
-    });
+    
   }
 
-  // Do an authenticated request to the fragments API server and log the result
-  const userFragments = await getUserFragments(user);
-
+  
   // Log the user's details
   console.log(user);
 
