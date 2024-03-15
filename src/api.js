@@ -5,7 +5,7 @@ import { log } from "console";
 
 // fragments microservice API to use, defaults to localhost:8080 if not set in env
 
-const apiUrl = process.env.API_URL || 'http://localhost:8080';
+export const apiUrl = process.env.API_URL || 'http://localhost:8080';
 
 
 /**
@@ -56,5 +56,28 @@ export async function createFragment(user, data) {
     return fragment;
   } catch (err) {
     console.error('Error creating fragment:', err);
+  }
+}
+
+/**
+ * Given an authenticated user, request the metadata for a specific fragment
+ * We expect a user to have an `idToken` attached, so we can send that along with the request.
+ */
+export async function getFragmentById(user, fragmentId) {
+  console.log('Getting fragment metadata from', { apiUrl });
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments/${fragmentId}/info`, {
+      method: 'GET',
+      headers: user.authorizationHeaders(),
+      
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log('Successfully got fragment metadata', { data });
+    return data;
+  } catch (err) {
+    console.error('Unable to call GET /v1/fragment', { err });
   }
 }

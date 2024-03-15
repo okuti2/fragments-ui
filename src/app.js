@@ -1,7 +1,7 @@
 // src/app.js
 
 import { Auth, getUser } from './auth';
-import { getUserFragments, createFragment } from './api';
+import { getUserFragments, createFragment, apiUrl, getFragmentById } from './api';
 
 async function init() {
   // Get our UI elements
@@ -9,6 +9,8 @@ async function init() {
   const loginBtn = document.querySelector('#login');
   const logoutBtn = document.querySelector('#logout');
   const fragmentForm = document.querySelector('#fragments');
+  const getFragmentsBtn = document.querySelector('#getFragments');
+  const fragmentList = document.querySelector('#fragmentList');
 
 
   // Wire up event handlers to deal with login and logout.
@@ -35,7 +37,7 @@ async function init() {
     document.getElementById('fileInput').value = '';
     document.getElementById('textInput').value = '';
     document.getElementById('contentType').selectedIndex = 0;
-});
+  });
 
 // Wire up event handler to deal with fragment form submission
   fragmentForm.onclick = async (event) => {
@@ -75,7 +77,41 @@ async function init() {
       console.error('Error creating fragment:', error);
       alert('Error uploading fragment. Please try again later.');
     });
-};
+  };
+
+  // Wire up event handler to get fragments
+  getFragmentsBtn.onclick = async () => {
+    try {
+      const fragments = await getUserFragments(user);
+      console.log('The fragments are' ,fragments);
+      console.log('The fragments[0] are' ,fragments.fragments[0]);
+      renderFragmentList(fragments.fragments);
+    } catch (error) {
+      console.error('Error fetching fragments:', error);
+      alert('Error fetching fragments. Please try again later.');
+    }
+  };
+
+  // Function to render fragment list
+  function renderFragmentList(fragments) {
+    fragmentList.innerHTML = ''; // Clear previous list
+    fragments.forEach(async fragment => {
+      const listItem = document.createElement('li');
+      const fragmentLink = document.createElement('a');
+      listItem.appendChild(fragmentLink);
+      fragmentLink.textContent = fragment; // Assuming the fragment object has an `id` property
+      fragmentLink.href = `#`;
+      console.log('The fragment is',fragment);
+      fragmentList.appendChild(listItem);
+
+      listItem.onclick = async () => {
+        const fragmentData = await getFragmentById(user, fragment);
+        alert('The metadata is' + JSON.stringify(fragmentData.fragment));
+        
+      
+      };
+    });
+  }
 
   // Do an authenticated request to the fragments API server and log the result
   const userFragments = await getUserFragments(user);
@@ -86,10 +122,8 @@ async function init() {
 
   // Update the UI to welcome the user
   userSection.hidden = false;
-
   // Show the user's username
   userSection.querySelector('.username').innerText = user.username;
-
   // Disable the Login button
   loginBtn.disabled = true;
 }
