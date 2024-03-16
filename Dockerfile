@@ -20,7 +20,8 @@ RUN npm ci
 # Stage 1: build the app
 FROM node:20.11.1-bullseye@sha256:2056770f9050f845d41f0b025f966f2c49f0148d073ca65b110a2fbb4749774c AS build
 # FROM node:20.11.1@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5 AS build
-ENV AWS_COGNITO_POOL_ID=us-east-1_xMACBztpc \
+ENV API_URL=http://localhost:8080 \
+    AWS_COGNITO_POOL_ID=us-east-1_xMACBztpc \
     AWS_COGNITO_CLIENT_ID=7l8d7ldffs6oadoveb90s9sial \
     AWS_COGNITO_HOSTED_UI_DOMAIN=okuti.auth.us-east-1.amazoncognito.com \
     OAUTH_SIGN_IN_REDIRECT_URL=http://localhost:1234 \
