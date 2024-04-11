@@ -51,7 +51,7 @@ async function getUser() {
     const username = currentAuthenticatedUser.username;
 
     // If that didn't throw, we have a user object, and the user is authenticated
-    console.log('The user is authenticated', username);
+    //console.log('The user is authenticated', username);
 
     // Get the user's Identity Token, which we'll use later with our
     // microservice. See discussion of various tokens:
@@ -72,7 +72,7 @@ async function getUser() {
       },
     };
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     // Unable to get user, return `null` instead
     return null;
   }
